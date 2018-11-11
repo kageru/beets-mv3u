@@ -8,17 +8,15 @@ class MV3U(BeetsPlugin):
         super(MV3U, self).__init__()
 
         self.register_listener('item_moved', self.add_rename)
+        self.register_listener('item_copied', self.add_rename)
         self.register_listener('import_task_created', self.clear_persistence)
-        self.register_listener('import', self.mv3u)
+        #self.register_listener('import', self.mv3u)
     
     
     """
-    def mv3u(self, item):
-        # TODO: cache renames, don’t write playlists for every single file
-        # TODO: sorted caching
-        src = item.path.decode()
-        dst = item.destination().decode()
-
+    This has been moved to a standalone program because I felt like it. ¯\_(ツ)_/¯
+    """
+    def mv3u(self):
         playlist_dir = self.config['playlists'].get()
         
         if not playlist_dir:
@@ -32,7 +30,6 @@ class MV3U(BeetsPlugin):
             with open(pl, 'w') as p:
                 p.write(''.join(p2))
             #print(f'Changed entry {src} to {dst} in {pl}')
-    """
 
 
     def clear_persistence(self, task, session):
@@ -47,10 +44,11 @@ class MV3U(BeetsPlugin):
             cache.write(f'{src}\t\t{dst}\n')
 
     
+    '''
     def mv3u(self, lib, paths):
         def read_renames() -> dict:
             with open(rename_cache) as cache:
                 return dict([line.rstrip('\n').split('\t\t') for line in cache])
-
-        print(read_renames())
+'''
+        #print(read_renames())
 
